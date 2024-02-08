@@ -24,11 +24,11 @@ function create(movie) {
     .then((createdMovies) => createdMovies[0]);
 }
 
-async function read(movie_id) {
+async function read(movieId) {
   // TODO: Add your code here
   return knex("movies")
     .select("*")
-    .where({ movie_id: movie_id}).first();
+    .where({ movie_id: movieId}).first();
 }
 
 module.exports = {
