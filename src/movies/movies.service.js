@@ -1,7 +1,7 @@
-const db = require("../db/connection");
+const knex = require("../db/connection");
 
 async function list(is_showing) {
-  return db("movies")
+  return knex("movies")
     .select("movies.*")
     .modify((queryBuilder) => {
       if (is_showing) {
@@ -17,12 +17,22 @@ async function list(is_showing) {
     });
 }
 
+function create(movie) {
+  return knex("movies")
+    .insert(movie)
+    .returning("*")
+    .then((createdMovies) => createdMovies[0]);
+}
+
 async function read(movie_id) {
   // TODO: Add your code here
-  
+  return knex("movies")
+    .select("*")
+    .where({ movie_id: movie_id}).first();
 }
 
 module.exports = {
   list,
   read,
+  create,
 };
