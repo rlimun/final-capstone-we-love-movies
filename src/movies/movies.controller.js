@@ -23,9 +23,8 @@ async function read(req, res, next) {
 }
 
 async function list(req, res, next) {
-  // TODO: Add your code here.
-  //console.log('list:', moviesService.list);
-  res.json({ data: await moviesService.list() });
+  const { is_showing } = req.query;
+  res.json({ data: await moviesService.list(is_showing)});
 }
 
 module.exports = {
