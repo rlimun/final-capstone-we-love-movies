@@ -5,15 +5,16 @@ exports.up = function(knex) {
         table.string("content");
         table.integer("score");
         table.integer("critic_id")
+        table.integer("movie_id");
         table
             .foreign("critic_id")
             .references("critic_id")
             .inTable("critics")
             .onDelete("cascade");
         table
-            .foreign("review_id")
-            .references("review_id")
-            .inTable("review")
+            .foreign("movie_id")
+            .references("movie_id")
+            .inTable("movies")
             .onDelete("cascade");
         table.timestamps(true, true); // Adds created_at and updated_at columns
     });
