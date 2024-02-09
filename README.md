@@ -6,7 +6,7 @@ This project is an API for managing movie reviews. It allows users to perform CR
 1. Clone repository to your local machine
 2. Run `npm install`
 3. Set up the PostgreSQL database and configure the connection in knexfile.js.
-4. Run the migrations: `knex migrate:latest` to create the database schema
+4. Run the migrations: `npx knex migrate:latest` to create the database schema
 5. Run `npm start` to start the server
 6. Run `npm test` to run the tests for this project
 
