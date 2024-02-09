@@ -1,14 +1,11 @@
 const knex = require("../db/connection");
-const mapProperties = require("../utils/map-properties");
-
-
 
 function mapCriticProperties(critic) {
   return {
-    'critic_id': critic.critic_id,
-    'preferred_name': critic.preferred_name,
-    'surname': critic.surname,
-    'organization_name': critic.organization_name
+    critic_id: critic.critic_id,
+    preferred_name: critic.preferred_name,
+    surname: critic.surname,
+    organization_name: critic.organization_name,
   };
 }
 
@@ -40,15 +37,19 @@ async function listMoviesById(movieId) {
       "theaters.city",
       "theaters.state",
       "theaters.zip",
-      "movies_theaters.is_showing",
+      "movies_theaters.is_showing"
     )
     .join("movies", "movies.movie_id", "movies_theaters.movie_id")
-    .join("movies_theaters", "theaters.theater_id", "movies_theaters.theater_id")
+    .join(
+      "movies_theaters",
+      "theaters.theater_id",
+      "movies_theaters.theater_id"
+    )
     .where({ "movies_theaters.is_showing": true })
-    .where({ "movies.movie_id": movieId});
+    .where({ "movies.movie_id": movieId });
 }
 
-async function listReviewsById(movieId){
+async function listReviewsById(movieId) {
   const criticProperties = mapCriticProperties("critics");
 
   return knex("movies")
@@ -60,20 +61,20 @@ async function listReviewsById(movieId){
       "critics.critic_id",
       "critics.preferred_name",
       "critics.surname",
-      "critics.organization_name",
+      "critics.organization_name"
     )
     .join("critics", "reviews.critic_id", "critics.critic_id")
     .join("reviews", "reviews.movie_id", "movies.movie_id")
-    .where({ "movies.movie_id": movieId})
+    .where({ "movies.movie_id": movieId })
     .then((data) => {
       return data.map((item) => {
         return {
           ...item,
-          critic: mapCriticProperties(item)
+          critic: mapCriticProperties(item),
         };
       });
-    })
-  }
+    });
+}
 
 function create(movie) {
   return knex("movies")
@@ -84,9 +85,7 @@ function create(movie) {
 
 async function read(movieId) {
   // TODO: Add your code here
-  return knex("movies")
-    .select("*")
-    .where({ movie_id: movieId}).first();
+  return knex("movies").select("*").where({ movie_id: movieId }).first();
 }
 
 module.exports = {

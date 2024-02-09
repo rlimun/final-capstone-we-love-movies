@@ -7,7 +7,9 @@ async function reviewExists(req, res, next) {
   const foundReview = await reviewsService.read(id);
 
   if (!foundReview) {
-    return res.status(404).json({ error: `Review with id ${id} cannot be found` });
+    return res
+      .status(404)
+      .json({ error: `Review with id ${id} cannot be found` });
   }
   res.locals.review = foundReview;
   next();
@@ -19,7 +21,7 @@ async function destroy(req, res) {
 }
 
 async function list(req, res) {
-  res.json({ data: await reviewsService.read(res.locals.review.review_id)});
+  res.json({ data: await reviewsService.read(res.locals.review.review_id) });
 }
 
 function hasMovieIdInPath(req, res, next) {
@@ -52,7 +54,7 @@ module.exports = {
     asyncErrorBoundary(reviewExists),
     asyncErrorBoundary(destroy),
   ],
- // list: [hasMovieIdInPath, asyncErrorBoundary(list)],
+  // list: [hasMovieIdInPath, asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(list)],
   update: [
     noMovieIdInPath,
