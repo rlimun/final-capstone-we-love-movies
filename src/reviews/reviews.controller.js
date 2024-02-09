@@ -3,13 +3,11 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
 async function reviewExists(req, res, next) {
-  // TODO: Write your code here
-  console.log('got inside reviewExists');
   const id = Number(req.params.reviewId);
   const foundReview = await reviewsService.read(id);
 
   if (!foundReview) {
-    return res.status(404).json({ error: `Review with id ${id} not found` });
+    return res.status(404).json({ error: `Review with id ${id} cannot be found` });
   }
   res.locals.review = foundReview;
   next();
@@ -17,7 +15,6 @@ async function reviewExists(req, res, next) {
 
 async function destroy(req, res) {
   await reviewsService.destroy(res.locals.review.review_id);
-  //console.log('destroy', res.locals.review.review_id);
   res.sendStatus(204);
 }
 
