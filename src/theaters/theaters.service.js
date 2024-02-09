@@ -1,4 +1,4 @@
-const db = require("../db/connection");
+const knex = require("../db/connection");
 const reduceProperties = require("../utils/reduce-properties");
 
 const reduceMovies = reduceProperties("theater_id", {
@@ -11,7 +11,7 @@ const reduceMovies = reduceProperties("theater_id", {
 });
 
 async function list() {
-  return db("theaters")
+  return knex("theaters")
     .join(
       "movies_theaters",
       "movies_theaters.theater_id",

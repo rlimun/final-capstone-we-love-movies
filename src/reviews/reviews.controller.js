@@ -22,7 +22,6 @@ async function list(req, res) {
   res.json({ data: await reviewsService.read(res.locals.review.review_id)});
 }
 
-
 function hasMovieIdInPath(req, res, next) {
   if (req.params.movieId) {
     return next();
