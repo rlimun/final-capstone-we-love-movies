@@ -7,13 +7,22 @@ const theatersRouter = require("../theaters/theaters.router");
 
 
 router
+    .route("/:movieId/theaters")
+    .get(controller.listMovies);
+router
+    .route("/:movieId/reviews")
+    .get(controller.listReviews);
+router 
+    .route("/:movieId")
+    .get(controller.read);
+router
     .route('/')
     .get(controller.list)
     .post(controller.create)
     .all(methodNotAllowed);
-router 
-    .route("/:movieId")
-    .get(controller.read);
-    
+
+
+
+
 
 module.exports = router;
