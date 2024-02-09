@@ -4,7 +4,7 @@ const tableName = "reviews";
 
 async function destroy(reviewId) {
   // TODO: Write your code here
-  return knex("reviews").where({ reviewId }).del();
+  return knex("reviews").where({ review_id: reviewId }).del();
 }
 
 async function list(review_id) {
@@ -21,7 +21,7 @@ async function read(reviewId) {
 }
 
 async function readCritic(critic_id) {
-  return db("critics").where({ critic_id }).first();
+  return knex("critics").where({ critic_id }).first();
 }
 
 async function setCritic(review) {
@@ -30,7 +30,7 @@ async function setCritic(review) {
 }
 
 async function update(review) {
-  return db(tableName)
+  return knex(tableName)
     .where({ review_id: review.review_id })
     .update({
       score: review.score,

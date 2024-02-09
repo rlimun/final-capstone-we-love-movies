@@ -4,8 +4,10 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 
 async function reviewExists(req, res, next) {
   // TODO: Write your code here
+  console.log('got inside reviewExists');
   const id = Number(req.params.reviewId);
   const foundReview = await reviewsService.read(id);
+
   if (!foundReview) {
     return res.status(404).json({ error: `Review with id ${id} not found` });
   }
@@ -14,16 +16,12 @@ async function reviewExists(req, res, next) {
 }
 
 async function destroy(req, res) {
-  // TODO: Write your code here
-
   await reviewsService.destroy(res.locals.review.review_id);
-  console.log('destroy', res.locals.review.review_id);
+  //console.log('destroy', res.locals.review.review_id);
   res.sendStatus(204);
 }
 
 async function list(req, res) {
-  // TODO: Write your code here
- // console.log('got here',  res.json({ data: await reviewsService.read(res.locals.review.review_id)}));
   res.json({ data: await reviewsService.read(res.locals.review.review_id)});
 }
 
