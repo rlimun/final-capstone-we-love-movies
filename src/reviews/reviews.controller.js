@@ -1,41 +1,55 @@
-const service = require("./reviews.service");
+const reviewsService = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
-async function reviewExists(request, response, next) {
+async function reviewExists(req, res, next) {
   // TODO: Write your code here
-
-  next({ });
+  const id = Number(req.params.reviewId);
+  const foundReview = await reviewsService.read(id);
+  if (!foundReview) {
+    return res.status(404).json({ error: `Review with id ${id} not found` });
+  }
+  res.locals.review = foundReview;
+  next();
 }
 
-async function destroy(request, response) {
+async function destroy(req, res) {
   // TODO: Write your code here
 
+  await reviewsService.destroy(res.locals.review.review_id);
+  console.log('destroy', res.locals.review.review_id);
+  res.sendStatus(204);
 }
 
-async function list(request, response) {
+async function list(req, res) {
   // TODO: Write your code here
-
-  response.json({  });
+ // console.log('got here',  res.json({ data: await reviewsService.read(res.locals.review.review_id)}));
+  res.json({ data: await reviewsService.read(res.locals.review.review_id)});
 }
 
-function hasMovieIdInPath(request, response, next) {
-  if (request.params.movieId) {
+
+function hasMovieIdInPath(req, res, next) {
+  if (req.params.movieId) {
     return next();
   }
-  methodNotAllowed(request, response, next);
+  methodNotAllowed(req, res, next);
 }
 
-function noMovieIdInPath(request, response, next) {
-  if (request.params.movieId) {
-    return methodNotAllowed(request, response, next);
+function noMovieIdInPath(req, res, next) {
+  if (req.params.movieId) {
+    return methodNotAllowed(req, res, next);
   }
   next();
 }
 
-async function update(request, response) {
-  // TODO: Write your code here
+async function update(req, res) {
+  const updatedReview = {
+    ...req.body.data,
+    review_id: res.locals.review.review_id,
+  };
 
+  const data = await reviewsService.update(updatedReview);
+  res.json({ data });
 }
 
 module.exports = {
@@ -44,7 +58,8 @@ module.exports = {
     asyncErrorBoundary(reviewExists),
     asyncErrorBoundary(destroy),
   ],
-  list: [hasMovieIdInPath, asyncErrorBoundary(list)],
+ // list: [hasMovieIdInPath, asyncErrorBoundary(list)],
+  read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(list)],
   update: [
     noMovieIdInPath,
     asyncErrorBoundary(reviewExists),
