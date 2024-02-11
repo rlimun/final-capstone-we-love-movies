@@ -26,8 +26,8 @@ async function list(is_showing) {
     });
 }
 
-async function listMoviesById(movieId) {
-  return knex("theaters")
+async function listMovieTheatersById(movieId) {
+  return knex("movies_theaters")
     .select(
       "movies.movie_id",
       "theaters.name",
@@ -41,9 +41,9 @@ async function listMoviesById(movieId) {
     )
     .join("movies", "movies.movie_id", "movies_theaters.movie_id")
     .join(
-      "movies_theaters",
-      "theaters.theater_id",
-      "movies_theaters.theater_id"
+      "theaters",
+      "movies_theaters.theater_id",
+      "theaters.theater_id"
     )
     .where({ "movies_theaters.is_showing": true })
     .where({ "movies.movie_id": movieId });
@@ -90,7 +90,7 @@ async function read(movieId) {
 
 module.exports = {
   list,
-  listMoviesById,
+  listMovieTheatersById,
   listReviewsById,
   read,
   create,
