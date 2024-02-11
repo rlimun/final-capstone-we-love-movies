@@ -1,4 +1,3 @@
-
 exports.up = function(knex) {
     return knex.schema.createTable("movies_theaters", (table) => {
         table.boolean("is_showing");
