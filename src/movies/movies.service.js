@@ -63,8 +63,8 @@ async function listReviewsById(movieId) {
       "critics.surname",
       "critics.organization_name"
     )
-    .join("critics", "reviews.critic_id", "critics.critic_id")
     .join("reviews", "reviews.movie_id", "movies.movie_id")
+    .join("critics", "reviews.critic_id", "critics.critic_id")
     .where({ "movies.movie_id": movieId })
     .then((data) => {
       return data.map((item) => {
